@@ -1,6 +1,6 @@
 
-### NOTES
-#### See my medium post  at medium.com@irekRomaniuk
+### NOTES:
+#### See my medium post  at medium.com@IrekRomaniuk
 
 export KUBECONFIG=/mnt/c/Users/irekromaniuk/AzureDevOps/aks-engine/_output/k8scfn/kubeconfig/kubeconfig.eastus.json
 
