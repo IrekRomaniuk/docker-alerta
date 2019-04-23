@@ -2,14 +2,13 @@
 ### NOTES:
 #### See my medium post  at medium.com@IrekRomaniuk
 
+##### Install alerta
+
 ###### export KUBECONFIG=/mnt/c/Users/irekromaniuk/AzureDevOps/aks-engine/_output/k8scfn/kubeconfig/kubeconfig.eastus.json
 
 ###### cd contrib/kubernetes/helm
 
 ###### helm install -f alerta/values.yaml alerta/ --name alerta
-```
-Error: found in requirements.yaml, but missing in charts/ directory: postgresql
-```
 
 ###### cd alerta
 
@@ -29,6 +28,8 @@ Saving 1 charts
 Downloading postgresql from repo https://kubernetes-charts.storage.googleapis.com
 Deleting outdated charts
 ```
+
+##### Remove alerta
 
 ###### helm del --purge alerta
 
