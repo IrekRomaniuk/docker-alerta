@@ -7,13 +7,16 @@ replicaCount: 1
 image:
   repository: alerta/alerta-web
   tag: 6.0.0
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: ClusterIP
+  annotations:
+      service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  #type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
@@ -47,32 +50,41 @@ tolerations: []
 
 affinity: {}
 
-# alertaAdminPassword: "" # if not provided will be randomly generated
-# alertaAdminUsers: # list of email addresses
-#   - "admin@alerta.io"
+alertaAdminPassword: 'n3w@y!n' # if not provided will be randomly generated
+alertaAdminUsers: # list of email addresses
+  - "admin@alerta.io"
 
 # Alerta plugins to install
-# alertaInstallPlugins:
-#   - normalise
-#   - enhance
+alertaInstallPlugins:
+  - normalise
+  - enhance
+  - slack
+  - msteams
 
-# ref: http://docs.alerta.io/en/latest/configuration.html
-# alertaConfig:
-#   DEBUG: "True"
-#   AUTH_REQUIRED: "True"
-#   PLUGINS: "['normalise', 'enhance']"
-#   DATABASE_URL: "" # provide db url here if you're not using the postgres chart 
+ref: http://docs.alerta.io/en/latest/configuration.html
+alertaConfig:
+  DEBUG: "True"
+  AUTH_REQUIRED: "True"
+  PLUGINS: "['normalise', 'enhance', 'slack', 'msteams']"
+  #LDAP_URL: 'ldap://10.35.20.21:389' # replace with your LDAP server
+  #LDAP_DOMAINS: {
+  #  'advisor360.com': 'uid=%s,ou=users,dc=advisor360,dc=com'
+  #}
+  SLACK_WEBHOOK_URL: "'https://hooks.slack.com/services/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'"
+  #SLACK_CHANNEL: 'alerta'
+  MS_TEAMS_WEBHOOK_URL:  "'https://outlook.office.com/webhook/9fe2a6c4-d037-4b9c-9eb2-375bad2afe24@548d74bc-082f-466e-b59d-ccb2c1d31266/IncomingWebhook/1baba54892f84b99abdd1c8914d6dfa2/9a23e315-7bf6-4c28-a516-ea8b7fcff5e6'"
+  #DATABASE_URL: "" # provide db url here if you're not using the postgres chart 
 
-# ref: http://docs.alerta.io/en/latest/webui.html
-# alertaWebUIConfig: |
-#   // contents of config.js
-#   'use strict';
-#   angular.module('config', [])
-#     .constant('config', {
-#       'endpoint'    : "/api",
-#       'provider'    : "basic"
-#     })
-#     .constant('colors', {});
+ref: http://docs.alerta.io/en/latest/webui.html
+alertaWebUIConfig: |
+  // contents of config.js
+  'use strict';
+  angular.module('config', [])
+    .constant('config', {
+      'endpoint'    : "/api",
+      'provider'    : "basic"
+    })
+    .constant('colors', {});
   
 postgresql:
   enabled: true

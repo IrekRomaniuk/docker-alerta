@@ -8,9 +8,15 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     gettext
 
+RUN apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev -y
+
 RUN pip install --no-cache-dir virtualenv && \
     virtualenv --python=python3 /venv && \
     /venv/bin/pip install uwsgi alerta alerta-server==$VERSION
+
+RUN /venv/bin/pip install python-ldap \
+    /venv/bin/pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=plugins/slack \
+    /venv/bin/pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=plugins/msteams
 
 ENV PATH $PATH:/venv/bin
 
