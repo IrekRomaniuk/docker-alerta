@@ -50,7 +50,7 @@ tolerations: []
 
 affinity: {}
 
-alertaAdminPassword: 'n3w@y!n' # if not provided will be randomly generated
+alertaAdminPassword: '' # if not provided will be randomly generated
 alertaAdminUsers: # list of email addresses
   - "admin@alerta.io"
 
