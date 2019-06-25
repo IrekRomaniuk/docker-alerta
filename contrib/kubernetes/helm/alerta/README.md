@@ -8,7 +8,7 @@
 
 ###### cd contrib/kubernetes/helm
 
-###### helm install -f alerta/values.yaml alerta/ --name alerta
+###### helm install -f alerta/values.yaml alerta/ --name alerta --dry-run --debug > alerta-dry-run.yml
 
 ###### cd alerta
 

@@ -1,0 +1,447 @@
+[debug] Created tunnel using local port: '65191'
+
+[debug] SERVER: "127.0.0.1:65191"
+
+[debug] Original chart version: ""
+[debug] CHART PATH: /mnt/c/Users/iromaniuk/docker-alerta/contrib/kubernetes/helm/alerta
+
+NAME:   alerta
+REVISION: 1
+RELEASED: Tue Jun 25 13:58:27 2019
+CHART: alerta-0.1.0
+USER-SUPPLIED VALUES:
+affinity: {}
+alertaAdminPassword: n3w@y!n
+alertaAdminUsers:
+- admin@alerta.io
+alertaConfig:
+  AUTH_REQUIRED: "True"
+  DEBUG: "True"
+  MS_TEAMS_WEBHOOK_URL: '''https://outlook.office.com/webhook/9fe2a6c4-d037-4b9c-9eb2-375bad2afe24@548d74bc-082f-466e-b59d-ccb2c1d31266/IncomingWebhook/1baba54892f84b99abdd1c8914d6dfa2/9a23e315-7bf6-4c28-a516-ea8b7fcff5e6'''
+  PLUGINS: '[''normalise'', ''enhance'', ''slack'', ''msteams'']'
+  SLACK_WEBHOOK_URL: '''https://hooks.slack.com/services/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'''
+alertaInstallPlugins:
+- normalise
+- enhance
+- slack
+- msteams
+alertaWebUIConfig: |
+  // contents of config.js
+  'use strict';
+  angular.module('config', [])
+    .constant('config', {
+      'endpoint'    : "/api",
+      'provider'    : "basic"
+    })
+    .constant('colors', {});
+fullnameOverride: ""
+image:
+  pullPolicy: Always
+  repository: alerta/alerta-web
+  tag: 6.0.0
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - alerta.example.com
+  path: /
+  tls: []
+nameOverride: ""
+nodeSelector: {}
+postgresql:
+  enabled: true
+  postgresDatabase: monitoring
+  postgresPassword: postgres
+  postgresUser: alerta
+ref: http://docs.alerta.io/en/latest/webui.html
+replicaCount: 1
+resources: {}
+service:
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  port: 80
+  type: LoadBalancer
+tolerations: []
+
+COMPUTED VALUES:
+affinity: {}
+alertaAdminPassword: n3w@y!n
+alertaAdminUsers:
+- admin@alerta.io
+alertaConfig:
+  AUTH_REQUIRED: "True"
+  DEBUG: "True"
+  MS_TEAMS_WEBHOOK_URL: '''https://outlook.office.com/webhook/9fe2a6c4-d037-4b9c-9eb2-375bad2afe24@548d74bc-082f-466e-b59d-ccb2c1d31266/IncomingWebhook/1baba54892f84b99abdd1c8914d6dfa2/9a23e315-7bf6-4c28-a516-ea8b7fcff5e6'''
+  PLUGINS: '[''normalise'', ''enhance'', ''slack'', ''msteams'']'
+  SLACK_WEBHOOK_URL: '''https://hooks.slack.com/services/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'''
+alertaInstallPlugins:
+- normalise
+- enhance
+- slack
+- msteams
+alertaWebUIConfig: |
+  // contents of config.js
+  'use strict';
+  angular.module('config', [])
+    .constant('config', {
+      'endpoint'    : "/api",
+      'provider'    : "basic"
+    })
+    .constant('colors', {});
+fullnameOverride: ""
+image:
+  pullPolicy: Always
+  repository: alerta/alerta-web
+  tag: 6.0.0
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - alerta.example.com
+  path: /
+  tls: []
+nameOverride: ""
+nodeSelector: {}
+postgresql:
+  affinity: {}
+  deploymentAnnotations: {}
+  enabled: true
+  global: {}
+  image: postgres
+  imageTag: 9.6.2
+  metrics:
+    enabled: false
+    image: wrouesnel/postgres_exporter
+    imagePullPolicy: IfNotPresent
+    imageTag: v0.4.6
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  networkPolicy:
+    allowExternal: true
+    enabled: false
+  nodeSelector: {}
+  persistence:
+    accessMode: ReadWriteOnce
+    enabled: true
+    mountPath: /var/lib/postgresql/data/pgdata
+    resourcePolicy: null
+    size: 8Gi
+    subPath: postgresql-db
+  podAnnotations: {}
+  postgresDatabase: monitoring
+  postgresPassword: postgres
+  postgresUser: alerta
+  probes:
+    liveness:
+      failureThreshold: 6
+      initialDelay: 60
+      timeoutSeconds: 5
+    readiness:
+      initialDelay: 5
+      periodSeconds: 5
+      timeoutSeconds: 3
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  service:
+    externalIPs: []
+    port: 5432
+    type: ClusterIP
+  tolerations: []
+  usePasswordFile: false
+ref: http://docs.alerta.io/en/latest/webui.html
+replicaCount: 1
+resources: {}
+service:
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  port: 80
+  type: LoadBalancer
+tolerations: []
+
+HOOKS:
+MANIFEST:
+
+---
+# Source: alerta/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alerta-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-0.18.2
+    release: alerta
+    heritage: Tiller
+type: Opaque
+data:
+  
+  postgres-password:  "cG9zdGdyZXM="
+---
+# Source: alerta/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alerta
+  labels:
+    app: alerta
+    chart: "alerta-0.1.0"
+    release: "alerta"
+    heritage: "Tiller"
+type: Opaque
+data:
+  
+  alerta-admin-password:  "bjN3QHkhbg=="
+---
+# Source: alerta/charts/postgresql/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alerta-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-0.18.2
+    release: alerta
+    heritage: Tiller
+data:
+---
+# Source: alerta/templates/configmap.yaml
+apiVersion: v1
+data:
+  alertad.conf: |
+    
+    AUTH_REQUIRED = True
+    DEBUG = True
+    MS_TEAMS_WEBHOOK_URL = 'https://outlook.office.com/webhook/9fe2a6c4-d037-4b9c-9eb2-375bad2afe24@548d74bc-082f-466e-b59d-ccb2c1d31266/IncomingWebhook/1baba54892f84b99abdd1c8914d6dfa2/9a23e315-7bf6-4c28-a516-ea8b7fcff5e6'
+    PLUGINS = ['normalise', 'enhance', 'slack', 'msteams']
+    SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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'
+    DATABASE_URL = "postgresql://alerta:postgres@alerta-postgresql:5432/monitoring"
+  config.js: |
+    // contents of config.js
+    'use strict';
+    angular.module('config', [])
+      .constant('config', {
+        'endpoint'    : "/api",
+        'provider'    : "basic"
+      })
+      .constant('colors', {});
+    
+kind: ConfigMap
+metadata:
+  name: alerta
+  labels:
+    app: alerta
+    chart: alerta-0.1.0
+    release: alerta
+    heritage: Tiller
+---
+# Source: alerta/charts/postgresql/templates/pvc.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: alerta-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-0.18.2
+    release: alerta
+    heritage: Tiller
+  annotations:
+    "helm.sh/resource-policy": 
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+# Source: alerta/charts/postgresql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: alerta-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-0.18.2
+    release: alerta
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: postgresql
+  selector:
+    app: postgresql
+    release: alerta
+---
+# Source: alerta/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: alerta
+  labels:
+    app: alerta
+    chart: alerta-0.1.0
+    release: alerta
+    heritage: Tiller
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: alerta
+    release: alerta
+---
+# Source: alerta/charts/postgresql/templates/deployment.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: alerta-postgresql
+  labels:
+    app: postgresql
+    chart: postgresql-0.18.2
+    release: alerta
+    heritage: Tiller
+spec:
+  selector:
+    matchLabels:
+      app: postgresql
+      release: alerta
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        release: alerta
+    spec:
+      containers:
+      - name: alerta-postgresql
+        image: "postgres:9.6.2"
+        imagePullPolicy: ""
+        args:
+        env:
+        - name: POSTGRES_USER
+          value: "alerta"
+          # Required for pg_isready in the health probes.
+        - name: PGUSER
+          value: "alerta"
+        - name: POSTGRES_DB
+          value: "monitoring"
+        - name: POSTGRES_INITDB_ARGS
+          value: ""
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: alerta-postgresql
+              key: postgres-password
+        - name: POD_IP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - exec pg_isready --host $POD_IP
+          initialDelaySeconds: 5
+          timeoutSeconds: 3
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data/pgdata
+          subPath: postgresql-db
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: alerta-postgresql
+---
+# Source: alerta/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: alerta
+  labels:
+    app: alerta
+    chart: alerta-0.1.0
+    release: alerta
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alerta
+      release: alerta
+  template:
+    metadata:
+      labels:
+        app: alerta
+        release: alerta
+    spec:
+      containers:
+        - name: alerta
+          image: "alerta/alerta-web:6.0.0"
+          imagePullPolicy: Always
+          env:
+            - name: ADMIN_USERS
+              value: admin@alerta.io
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: alerta
+                  key: alerta-admin-password
+            - name: INSTALL_PLUGINS
+              value: normalise,enhance,slack,msteams
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - name: alerta-config
+              mountPath: /app/alertad.conf
+              subPath: alertad.conf
+            - name: alerta-config
+              mountPath: /app/config.js
+              subPath: config.js
+          resources:
+            {}
+            
+      volumes:
+        - name: alerta-config
+          configMap:
+            name: alerta
